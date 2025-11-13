@@ -1,0 +1,38 @@
+// backend/prisma/schema.prisma
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL") // ex.: "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("VIEWER") // 'ADMIN' | 'VIEWER' (validado no backend)
+  createdAt DateTime @default(now())
+  calls     Call[]   @relation("UserCalls")
+}
+
+model Call {
+  id             String   @id @default(cuid())
+  ativo          String
+  operacao       String   // 'COMPRA' | 'VENDA' (validado no backend)
+  entry          Float
+  stop           Float
+  alvo1          Float?
+  alvo2          Float?
+  alvo3          Float?
+  status         String   @default("AGUARDANDO") // 'AGUARDANDO' | 'ATIVO' | 'FINALIZADO' | 'CANCELADO'
+  date           String
+  fundamentacao  String?
+  authorId       String
+  author         User     @relation("UserCalls", fields: [authorId], references: [id])
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
