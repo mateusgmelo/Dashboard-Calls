@@ -1,18 +1,20 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
 import type { User } from '@/types'
 
-type AuthState = { user: User|null; token: string|null; login: (u:User,t:string)=>void; logout:()=>void }
+type AuthState = { user: User|null; token: string|null; loading: boolean; login: (u:User,t:string)=>void; logout:()=>void }
 
 const AuthCtx = createContext<AuthState | null>(null)
 
 export function AuthProvider({ children }:{children:ReactNode}){
   const [user,setUser] = useState<User|null>(null)
   const [token,setToken] = useState<string|null>(null)
+  const [loading,setLoading] = useState(true)
 
   useEffect(()=>{
     const t = localStorage.getItem('accessToken')
     const u = localStorage.getItem('user')
     if (t && u) { setToken(t); setUser(JSON.parse(u)) }
+    setLoading(false)
   }, [])
 
   const login = (u:User, t:string) => {
@@ -27,7 +29,7 @@ export function AuthProvider({ children }:{children:ReactNode}){
     window.location.href = '/login'
   }
 
-  return <AuthCtx.Provider value={{ user, token, login, logout }}>{children}</AuthCtx.Provider>
+  return <AuthCtx.Provider value={{ user, token, loading, login, logout }}>{children}</AuthCtx.Provider>
 }
 
 export function useAuth(){

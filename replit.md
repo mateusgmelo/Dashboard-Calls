@@ -29,6 +29,13 @@ traderslab-full/
 
 ## Recent Changes (2025-11-23)
 
+### Bug Fixes
+1. **Session Persistence Fix:**
+   - Fixed authentication persistence bug where page reload would log users out
+   - Added loading state to AuthProvider to wait for token restoration from localStorage
+   - Updated ProtectedRoute to show spinner while checking authentication
+   - Users now remain logged in across page reloads and refreshes
+
 ### Replit Environment Setup
 1. **Backend Configuration:**
    - Changed port from 3333 to 3000 (Replit allowed port)
