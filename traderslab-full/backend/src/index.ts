@@ -6,11 +6,22 @@ import { env } from './lib/env'               // <-- sem "src/"
 import { authRoutes } from './routes/auth'
 import { callRoutes } from './routes/calls'
 import { userRoutes } from './routes/users'
+import { ZodError } from 'zod'
 
 const app = Fastify({ logger: true })
 
 app.register(cors, { origin: true })
 app.register(authPlugin)
+
+app.setErrorHandler((error, request, reply) => {
+  if (error instanceof ZodError) {
+    return reply.status(400).send({
+      message: error.errors
+    })
+  }
+  
+  reply.send(error)
+})
 
 app.get('/health', async () => ({ ok: true }))
 

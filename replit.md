@@ -36,6 +36,16 @@ traderslab-full/
    - Updated ProtectedRoute to show spinner while checking authentication
    - Users now remain logged in across page reloads and refreshes
 
+2. **Call Form Validation & Error Handling:**
+   - Added automatic uppercase conversion for ticker symbols (e.g., "petr4" → "PETR4")
+   - Implemented frontend validation for ticker format (3-6 alphanumeric characters)
+   - Added real-time validation for stop loss rules (COMPRA: stop < entry, VENDA: stop > entry)
+   - Improved error messages with user-friendly explanations
+   - Added visual error alert at top of form showing all validation issues
+   - Enhanced backend error handler to properly format Zod validation errors
+   - Added tooltips explaining field requirements
+   - Added R$ prefix to all price fields for better UX
+
 ### Replit Environment Setup
 1. **Backend Configuration:**
    - Changed port from 3333 to 3000 (Replit allowed port)
